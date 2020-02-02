@@ -3,7 +3,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:airub/services/network.dart';
 import 'package:airub/screens/mainscreen.dart';
 
-const String apiKey = '4400e7a2a3f4ff44c525ee690f8693a830c5900e';
 const String urlSearch = 'https://api.waqi.info/nsearch/station/ulaanbaatar';
 
 class LoadingScreen extends StatefulWidget {
@@ -15,8 +14,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getStations() async {
     NetworkUtils res = NetworkUtils(urlSearch);
     var data = await res.getData();
+    List<int> results = [];
+
+    for (var arr in data['results']) {
+      results.add(arr['x']);
+    }
+
     Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MainScreen()),
+      context, MaterialPageRoute(builder: (context) => MainScreen(results)),
     );
   }
 
@@ -29,7 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: Colors.black54,
       child: SpinKitDoubleBounce(
         color: Colors.white,
       ),

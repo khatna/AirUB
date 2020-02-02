@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:airub/services/network.dart';
+import 'package:airub/services/resources.dart' as resources;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+const String apiKey = '4400e7a2a3f4ff44c525ee690f8693a830c5900e';
+
 
 class Report extends StatefulWidget {
-  final int idx;
+  final int id;
 
-  Report({this.idx});
+  Report({this.id});
 
   @override
   _ReportState createState() => _ReportState();
@@ -11,6 +17,32 @@ class Report extends StatefulWidget {
 
 class _ReportState extends State<Report> {
   bool summary = true;
+
+  Color color = Colors.white;
+  String name = '', desc = '';
+  int aqi;
+
+  void getData() async {
+    var url = 'https://api.waqi.info/feed/@${widget.id}/?token=$apiKey';
+    NetworkUtils res = NetworkUtils(url);
+    var temp = await res.getData();
+
+    if (this.mounted) {
+      setState(() {
+        this.aqi = temp['data']['aqi'];
+        this.color = resources.getColor(this.aqi);
+        this.desc = resources.getDesc(this.aqi);
+      });
+    }
+  }
+
+  initState() {
+    super.initState();
+    setState(() {
+      this.name = resources.names[widget.id];
+    });
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +53,13 @@ class _ReportState extends State<Report> {
         });
       },
       child: Container(
-        margin: EdgeInsets.all(25.0),
+        margin: EdgeInsets.only(top: 25.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'БАЯНХОШУУ',
+                this.name,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 32.0,
@@ -41,13 +73,13 @@ class _ReportState extends State<Report> {
                   ],
                 ),
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 20.0),
               Container(
-                width: 200.0,
-                height: 200.0,
+                width: 220.0,
+                height: 220.0,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.orangeAccent.shade200,
+                    color: this.color,
                     width: 8.0,
                   ),
                   borderRadius: BorderRadius.circular(32.0),
@@ -59,9 +91,9 @@ class _ReportState extends State<Report> {
                         : CrossFadeState.showSecond,
                     duration: Duration(milliseconds: 200),
                     firstChild: Text(
-                      '${this.widget.idx}',
+                      '${this.aqi}',
                       style: TextStyle(
-                        color: Colors.orangeAccent.shade200,
+                        color: this.color,
                         fontSize: 96.0,
                         fontWeight: FontWeight.bold,
                         shadows: <Shadow>[
@@ -77,31 +109,36 @@ class _ReportState extends State<Report> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'PM2.5: 32',
+                          'Агаарын Чанар: ${this.aqi}',
                           style: TextStyle(
-                              color: Colors.orangeAccent.shade200,
-                              fontSize: 16.0),
+                            color: Colors.orangeAccent,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent.shade200,
-                              fontSize: 16.0),
+                              color: Colors.orangeAccent, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent.shade200,
-                              fontSize: 16.0),
+                              color: Colors.orangeAccent, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent.shade200,
-                              fontSize: 16.0),
+                              color: Colors.orangeAccent, fontSize: 16.0),
+                        ),
+                        SizedBox(height: 10.0),
+                        Text(
+                          'PM2.5: 32',
+                          style: TextStyle(
+                              color: Colors.orangeAccent, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                       ],
@@ -109,9 +146,9 @@ class _ReportState extends State<Report> {
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              SizedBox(height: 20.0),
               Text(
-                'Бохирдолтой',
+                this.desc,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,
