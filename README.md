@@ -6,7 +6,7 @@ one of the most polluted cities in the world.
 ![My beautiful city](images/bg.jpg)
 
 ## About AirUB
-![AirUB](images/ss1.png)
+![AirUB](images/ss1.png =100x)
 
 This project was the result of an intersession during which I had no idea what to do. So, I decided
 to learn how to write apps using Flutter, Google's cross platform development library. Since this is
