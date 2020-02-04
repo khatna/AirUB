@@ -5,6 +5,8 @@ import 'package:airub/screens/mainscreen.dart';
 
 const String urlSearch = 'https://api.waqi.info/nsearch/station/ulaanbaatar';
 
+const String apiKey = '4400e7a2a3f4ff44c525ee690f8693a830c5900e';
+
 class LoadingScreen extends StatefulWidget {
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -14,14 +16,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getStations() async {
     NetworkUtils res = NetworkUtils(urlSearch);
     var data = await res.getData();
-    List<int> results = [];
+    List<Future> requests = [];
 
     for (var arr in data['results']) {
-      results.add(arr['x']);
+      var url = 'https://api.waqi.info/feed/@${arr['x']}/?token=$apiKey';
+      NetworkUtils res = NetworkUtils(url);
+      requests.add(res.getData());
     }
 
     Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MainScreen(results)),
+      context, MaterialPageRoute(builder: (context) => MainScreen(requests)),
     );
   }
 

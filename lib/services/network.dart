@@ -6,7 +6,7 @@ class NetworkUtils {
 
   NetworkUtils(this.url);
 
-  Future getData() async {
+  Future<dynamic> getData() async {
     http.Response res = await http.get(url);
 
     if (res.statusCode == 200) {

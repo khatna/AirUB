@@ -1,47 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:airub/services/network.dart';
-import 'package:airub/services/resources.dart' as resources;
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-const String apiKey = '4400e7a2a3f4ff44c525ee690f8693a830c5900e';
-
+import 'package:airub/services/resources.dart';
 
 class Report extends StatefulWidget {
-  final int id;
+  final dynamic data;
 
-  Report({this.id});
+  Report({this.data});
 
   @override
   _ReportState createState() => _ReportState();
 }
 
 class _ReportState extends State<Report> {
-  bool summary = true;
+  bool summary = false;
 
+  int id, aqi;
   Color color = Colors.white;
   String name = '', desc = '';
-  int aqi;
-
-  void getData() async {
-    var url = 'https://api.waqi.info/feed/@${widget.id}/?token=$apiKey';
-    NetworkUtils res = NetworkUtils(url);
-    var temp = await res.getData();
-
-    if (this.mounted) {
-      setState(() {
-        this.aqi = temp['data']['aqi'];
-        this.color = resources.getColor(this.aqi);
-        this.desc = resources.getDesc(this.aqi);
-      });
-    }
-  }
 
   initState() {
-    super.initState();
     setState(() {
-      this.name = resources.names[widget.id];
+      id = widget.data['data']['idx'];
+
+      var x = widget.data['data']['aqi'];
+      if (x is int) {
+        aqi = x;
+        color = getColor(aqi);
+        desc = getDesc(aqi);
+      }
+
+      name = names[id];
     });
-    getData();
+
+    super.initState();
   }
 
   @override
@@ -91,7 +81,7 @@ class _ReportState extends State<Report> {
                         : CrossFadeState.showSecond,
                     duration: Duration(milliseconds: 200),
                     firstChild: Text(
-                      '${this.aqi}',
+                      '${aqi ?? 'N/A'}',
                       style: TextStyle(
                         color: this.color,
                         fontSize: 96.0,
@@ -109,9 +99,9 @@ class _ReportState extends State<Report> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Агаарын Чанар: ${this.aqi}',
+                          'Агаарын Чанар: ${aqi ?? 'N/A'}',
                           style: TextStyle(
-                            color: Colors.orangeAccent,
+                            color: this.color,
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
@@ -120,25 +110,25 @@ class _ReportState extends State<Report> {
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent, fontSize: 16.0),
+                              color: this.color, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent, fontSize: 16.0),
+                              color: this.color, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent, fontSize: 16.0),
+                              color: this.color, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                         Text(
                           'PM2.5: 32',
                           style: TextStyle(
-                              color: Colors.orangeAccent, fontSize: 16.0),
+                              color: this.color, fontSize: 16.0),
                         ),
                         SizedBox(height: 10.0),
                       ],

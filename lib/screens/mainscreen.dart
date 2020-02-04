@@ -3,9 +3,9 @@ import 'package:airub/components/report.dart';
 import 'package:airub/components/minireport.dart';
 
 class MainScreen extends StatefulWidget {
-  final List<dynamic> results;
+  final List<Future> requests;
 
-  MainScreen(this.results);
+  MainScreen(this.requests);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -13,32 +13,43 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int highlight;
-  List<Widget> list = [];
+  List<Future> reqs;
+  List<Widget> list;
 
   @override
   void initState() {
-    this.highlight = widget.results[0];
-    setState(() {
-      for (int i in widget.results) {
-        list.add(
-          GestureDetector(
-            onTap: () {
-              print(i);
-              setState(() {
-                this.highlight = i;
-              });
-            },
-            child: MiniReport(i),
-          ),
-        );
-      }
-    });
+    highlight = 0;
+    reqs = widget.requests;
+
+    list = [];
+    for (var i = 0; i < reqs.length; i++) {
+      Widget fb = FutureBuilder(
+        future: reqs[i],
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return GestureDetector(
+              child: MiniReport(data: snapshot.data),
+              onTap: () {
+                setState(() {
+                  this.highlight = i;
+                });
+              },
+            );
+          } else {
+            return SizedBox();
+          }
+        },
+      );
+
+      list.add(fb);
+    }
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Container(
@@ -54,15 +65,28 @@ class _MainScreenState extends State<MainScreen> {
           body: SafeArea(
             child: Column(
               children: <Widget>[
+                Text('${this.highlight}'),
                 Expanded(
                   flex: 4,
-                  child: Report(id: this.highlight),
+                  child: FutureBuilder(
+                    key: ValueKey<int>(highlight),
+                    future: reqs[highlight],
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return Report(data: snapshot.data);
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                  ),
                 ),
                 Expanded(
                   flex: 1,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: this.list,
+                  child: GestureDetector(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: this.list,
+                    ),
                   ),
                 ),
               ],
