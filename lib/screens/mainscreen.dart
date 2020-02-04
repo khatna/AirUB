@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
           color: Colors.white,
           image: DecorationImage(
             image: AssetImage('images/bg.jpg'),
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
           ),
         ),
         child: Scaffold(
@@ -65,7 +65,6 @@ class _MainScreenState extends State<MainScreen> {
           body: SafeArea(
             child: Column(
               children: <Widget>[
-                Text('${this.highlight}'),
                 Expanded(
                   flex: 4,
                   child: FutureBuilder(

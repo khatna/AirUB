@@ -16,6 +16,7 @@ class _ReportState extends State<Report> {
   int id, aqi;
   Color color = Colors.white;
   String name = '', desc = '';
+  List<Widget> list = [];
 
   initState() {
     setState(() {
@@ -29,6 +30,27 @@ class _ReportState extends State<Report> {
       }
 
       name = names[id];
+
+      list.add(Text(
+        'Агаарын Чанар: ${aqi ?? 'N/A'}',
+        style: TextStyle(
+          color: this.color,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ));
+
+      for (var k in widget.data['data']['iaqi'].keys) {
+        list.add(
+          SizedBox(height: 5.0),
+        );
+        list.add(
+          Text(
+            '${k.toUpperCase()}: ${widget.data['data']['iaqi'][k]['v']}',
+            style: TextStyle(color: this.color, fontSize: 16.0),
+          ),
+        );
+      }
     });
 
     super.initState();
@@ -65,8 +87,8 @@ class _ReportState extends State<Report> {
               ),
               SizedBox(height: 20.0),
               Container(
-                width: 220.0,
-                height: 220.0,
+                width: 240.0,
+                height: 240.0,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: this.color,
@@ -97,41 +119,7 @@ class _ReportState extends State<Report> {
                     ),
                     secondChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Агаарын Чанар: ${aqi ?? 'N/A'}',
-                          style: TextStyle(
-                            color: this.color,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          'PM2.5: 32',
-                          style: TextStyle(
-                              color: this.color, fontSize: 16.0),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          'PM2.5: 32',
-                          style: TextStyle(
-                              color: this.color, fontSize: 16.0),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          'PM2.5: 32',
-                          style: TextStyle(
-                              color: this.color, fontSize: 16.0),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          'PM2.5: 32',
-                          style: TextStyle(
-                              color: this.color, fontSize: 16.0),
-                        ),
-                        SizedBox(height: 10.0),
-                      ],
+                      children: this.list,
                     ),
                   ),
                 ),
