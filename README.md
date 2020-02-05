@@ -3,10 +3,12 @@
 An iOS and Android App that provides real time air pollution information from Ulaanbaatar, Mongolia,
 one of the most polluted cities in the world.
 
-![My beautiful city](images/bgmd.jpg)
+![My beautiful city](images/mdbg.jpg)
 
 ## About AirUB
-![AirUB](images/ss1.png)
+
+<img src="images/ss1.png" alt="drawing" width="400"/>
+<img src="images/ss2.png" alt="drawing" width="400"/>
 
 This project was the result of an intersession during which I had no idea what to do. So, I decided
 to learn how to write apps using Flutter, Google's cross platform development library. Since this is

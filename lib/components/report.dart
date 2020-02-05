@@ -42,7 +42,7 @@ class _ReportState extends State<Report> {
 
       for (var k in widget.data['data']['iaqi'].keys) {
         list.add(
-          SizedBox(height: 5.0),
+          SizedBox(height: 8.0),
         );
         list.add(
           Text(
@@ -51,6 +51,8 @@ class _ReportState extends State<Report> {
           ),
         );
       }
+
+      list.add(SizedBox(height: 10.0,));
     });
 
     super.initState();
@@ -88,7 +90,7 @@ class _ReportState extends State<Report> {
               SizedBox(height: 20.0),
               Container(
                 width: 240.0,
-                height: 240.0,
+                // height: 240.0,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: this.color,
