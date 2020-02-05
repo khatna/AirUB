@@ -7,8 +7,10 @@ one of the most polluted cities in the world.
 
 ## About AirUB
 
-<img src="images/ss1.png" alt="drawing" width="250"/>
-<img src="images/ss2.png" alt="drawing" width="250"/>
+<p float='left'>
+    <img src="images/ss1.png" alt="drawing" width="350"/>
+    <img src="images/ss2.png" alt="drawing" width="350"/>
+</p>
 
 This project was the result of an intersession during which I had no idea what to do. So, I decided
 to learn how to write apps using Flutter, Google's cross platform development library. Since this is
