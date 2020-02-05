@@ -3,7 +3,7 @@
 An iOS and Android App that provides real time air pollution information from Ulaanbaatar, Mongolia,
 one of the most polluted cities in the world.
 
-![My beautiful city](images/bg.jpg)
+![My beautiful city](images/bgmd.jpg)
 
 ## About AirUB
 ![AirUB](images/ss1.png)
